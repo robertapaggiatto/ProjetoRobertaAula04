@@ -4,7 +4,7 @@
   "metadata": {
     "colab": {
       "provenance": [],
-      "authorship_tag": "ABX9TyMt6XigcsFxriDHHk/bEtAw",
+      "authorship_tag": "ABX9TyNSwXo4WQieCMqrzVvhXslf",
       "include_colab_link": true
     },
     "kernelspec": {
@@ -83,6 +83,64 @@
         "  for i,j in zip(produtos, precos):\n",
         "    print(f\"o produto {i} custa R${j:.2f}\")"
       ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "1 # revisão python semana 1\n",
+        "2 # ponto de partida\n",
+        "3 print(\"comando de python para exibir textos\")\n",
+        "4\n",
+        "5 pet = \"Bingo\" # <---- memóriad de texto são str (string)\n",
+        "6 print(pet)\n",
+        "7\n",
+        "8 idade = 4 # <--- é um número inteiro (int)\n",
+        "9 altura = 1.756 # <---- é um número decimal (float)\n",
+        "10\n",
+        "11 print(idade)\n",
+        "12 print(altura)\n",
+        "13\n",
+        "14 print(f\"o pet {pet} tem {idade} e {altura} de altura\")\n",
+        "15\n",
+        "16outro_pet = input(\"Me fala o nome do seu pet\")\n",
+        "17\n",
+        "18print (f\"AAAA, então o nome do seu  outro pet é [outro_pe]\n",
+        "19\n",
+        "         20idade_pet = int(input(\"qual a idade do seu pet\"))\n",
+        "         21print(f\"então o (outro_pet] tem {idade)\")\n"
+      ],
+      "metadata": {
+        "id": "_ZAnCvGnvHko"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "1 print(\"vamos descobrir se você é amior de idade\")\n",
+        "2 idade = int(input (Qual sua idade))\n",
+        "3\n",
+        "4 if idade >= 18:\n",
+        "5  print(!parabens, você é maior de idade\")\n",
+        "6else:\n",
+        "         7 print(\"então você é menor de idade\")\n",
+        "\n"
+      ],
+      "metadata": {
+        "id": "vG9xEs0X73nJ"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [],
+      "metadata": {
+        "id": "QlKDZAHo8VK_"
+      },
+      "execution_count": null,
+      "outputs": []
     }
   ]
 }
