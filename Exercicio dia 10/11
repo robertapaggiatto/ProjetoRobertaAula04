@@ -1,0 +1,88 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyMt6XigcsFxriDHHk/bEtAw",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/robertapaggiatto/ProjetoRobertaAula04/blob/master/Exercicio%20dia%2010/11\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "QJYFwoKjjjfU",
+        "outputId": "fc3ac471-3459-4278-f190-2d3081741512"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "====== Bem vindo ao sacolão da GENERATION ======\n",
+            "Banana\n",
+            "Melancia\n",
+            "Jambolão\n",
+            "o produto Banana custa R$5.00\n",
+            "o produto Melancia custa R$19.00\n",
+            "o produto Jambolão custa R$29.99\n"
+          ]
+        }
+      ],
+      "source": [
+        "# etapa 1 - msg de boas vindas\n",
+        "print(\"====== Bem vindo ao sacolão da GENERATION ======\")\n",
+        "\n",
+        "# etapa 2 - carregar dados - criar listas\n",
+        "produtos = [\"Banana\",\"Melancia\",\"Jambolão\"]\n",
+        "precos = [5,19,29.99]\n",
+        "\n",
+        "# etapa 3 - estrutura condicionada\n",
+        "# etapa 3.1 - vamos mostrar os produtos\n",
+        "for i in produtos:\n",
+        "  print(i)\n",
+        "\n",
+        "# for de duas listas\n",
+        "for i,j in zip(produtos, precos):\n",
+        "  print(f\"o produto {i} custa R${j:.2f}\")\n",
+        "\n",
+        "resposta = input('deseja cadastrar novo produto?')\n",
+        "\n",
+        "if resposta.lower() == \"sim\":\n",
+        "  novo_produto = input(\"informe o nome do produto\")\n",
+        "  novo_preco = float(input(\"informe o valor\"))\n",
+        "  print(\"produto cadastro com sucesso\")\n",
+        "\n",
+        "  # sempre que queremos colocar um novo valor na lista\n",
+        "  # devemos usar o método de anexo\n",
+        "  # lista.anexo(novo_valor)\n",
+        "  produtos.append(novo_produto)\n",
+        "  precos.append(novo_preco)\n",
+        "  for i,j in zip(produtos, precos):\n",
+        "    print(f\"o produto {i} custa R${j:.2f}\")"
+      ]
+    }
+  ]
+}
