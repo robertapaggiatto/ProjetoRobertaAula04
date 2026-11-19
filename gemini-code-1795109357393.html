@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cadastro de Locais | Geolocalização</title>
+  
+  <!-- Leaflet CSS para visualização do mapa -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+
+  <style>
+    :root {
+      --bg-color: #0f172a;
+      --surface-color: #1e293b;
+      --surface-hover: #334155;
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --success: #10b981;
+      --danger: #ef4444;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border: #334155;
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1.5rem;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 960px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      background: var(--surface-color);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        grid-template-columns: 1fr;
+        padding: 1.25rem;
+      }
+    }
+
+    header {
+      margin-bottom: 1.5rem;
+    }
+
+    header h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.35rem;
+      letter-spacing: -0.02em;
+    }
+
+    header p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+
+    .form-group {
+      margin-bottom: 1.15rem;
+    }
+
+    label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      color: var(--text-main);
+    }
+
+    input {
+      width: 100%;
+      padding: 0.75rem 0.9rem;
+      background-color: var(--bg-color);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-main);
+      font-size: 0.95rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    }
+
+    .coords-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: background-color 0.2s, transform 0.1s;
+    }
+
+    .btn:active {
+      transform: scale(0.99);
+    }
+
+    .btn-secondary {
+      background-color: var(--surface-hover);
+      color: var(--text-main);
+      margin-bottom: 1rem;
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background-color: #475569;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .status-banner {
+      margin-top: 1rem;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      display: none;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .status-banner.success {
+      display: flex;
+      background-color: rgba(16, 185, 129, 0.15);
+      border: 1px solid var(--success);
+      color: #6ee7b7;
+    }
+
+    .status-banner.error {
+      display: flex;
+      background-color: rgba(239, 68, 68, 0.15);
+      border: 1px solid var(--danger);
+      color: #fca5a5;
+    }
+
+    .map-wrapper {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      min-height: 320px;
+    }
+
+    #map {
+      flex: 1;
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      z-index: 1;
+    }
+
+    .map-hint {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <main class="container">
+    <!-- Coluna do Formulário -->
+    <section>
+      <header>
+        <h1>Registrar Localização</h1>
+        <p>Preencha os dados abaixo ou clique no mapa para capturar as coordenadas.</p>
+      </header>
+
+      <button type="button" id="btnGps" class="btn btn-secondary">
+        📍 Usar minha localização atual (GPS)
+      </button>
+
+      <form id="locationForm">
+        <div class="form-group">
+          <label for="nomeLocal">Nome do local *</label>
+          <input 
+            type="text" 
+            id="nomeLocal" 
+            name="nomeLocal" 
+            placeholder="Ex: Catedral da Sé, Sumaré..." 
+            required 
+          />
+        </div>
+
+        <div class="coords-row">
+          <div class="form-group">
+            <label for="latitude">Latitude *</label>
+            <input 
+              type="number" 
+              step="any" 
+              id="latitude" 
+              name="latitude" 
+              placeholder="-23.5505" 
+              min="-90" 
+              max="90" 
+              required 
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="longitude">Longitude *</label>
+            <input 
+              type="number" 
+              step="any" 
+              id="longitude" 
+              name="longitude" 
+              placeholder="-46.6333" 
+              min="-180" 
+              max="180" 
+              required 
+            />
+          </div>
+        </div>
+
+        <button type="submit" id="btnSubmit" class="btn btn-primary">
+          Enviar para Planilha
+        </button>
+
+        <div id="statusMessage" class="status-banner" role="alert"></div>
+      </form>
+    </section>
+
+    <!-- Coluna do Mapa Interativo -->
+    <section class="map-wrapper">
+      <div id="map"></div>
+      <p class="map-hint">Dica: Clique em qualquer ponto do mapa para preencher Latitude e Longitude.</p>
+    </section>
+  </main>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+
+  <script>
+    /**
+     * ============================================================================
+     * CONFIGURAÇÃO DO GOOGLE FORMS (OBRIGATÓRIO PREENCHER)
+     * ============================================================================
+     * 1. Abra seu Google Forms no modo de visualização (link público de resposta).
+     * 2. Copie a URL e troque "/viewform" no final por "/formResponse".
+     * 3. Pressione F12 (Inspecionar) nos campos do formulário e pegue os atributos
+     *    name="entry.XXXXXXXXX" de cada pergunta.
+     */
+    const GOOGLE_FORMS_CONFIG = {
+      formActionUrl: 'https://docs.google.com/forms/d/e/SEU_FORM_ID_AQUI/formResponse',
+      entries: {
+        nomeLocal: 'entry.111111111', // Substitua pelo entry ID de "Nome do local"
+        latitude:  'entry.222222222', // Substitua pelo entry ID de "Latitude"
+        longitude: 'entry.333333333'  // Substitua pelo entry ID de "Longitude"
+      }
+    };
+
+    // Referências do DOM
+    const form = document.getElementById('locationForm');
+    const nomeInput = document.getElementById('nomeLocal');
+    const latInput = document.getElementById('latitude');
+    const lngInput = document.getElementById('longitude');
+    const btnGps = document.getElementById('btnGps');
+    const btnSubmit = document.getElementById('btnSubmit');
+    const statusMessage = document.getElementById('statusMessage');
+
+    // Inicializa o mapa centralizado em São Paulo / Sumaré
+    const defaultCoords = [-22.8219, -47.2669];
+    const map = L.map('map').setView(defaultCoords, 10);
+
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+      maxZoom: 19
+    }).addTo(map);
+
+    let marker = null;
+
+    function updateMarker(lat, lng, zoom = 15) {
+      if (isNaN(lat) || isNaN(lng)) return;
+      if (marker) {
+        marker.setLatLng([lat, lng]);
+      } else {
+        marker = L.marker([lat, lng]).addTo(map);
+      }
+      map.setView([lat, lng], zoom);
+    }
+
+    // Clique no mapa atualiza os inputs
+    map.on('click', (e) => {
+      const lat = Number(e.latlng.lat.toFixed(6));
+      const lng = Number(e.latlng.lng.toFixed(6));
+      latInput.value = lat;
+      lngInput.value = lng;
+      updateMarker(lat, lng, map.getZoom());
+    });
+
+    // Digitação manual nos inputs atualiza o marcador no mapa
+    [latInput, lngInput].forEach(input => {
+      input.addEventListener('change', () => {
+        const lat = parseFloat(latInput.value);
+        const lng = parseFloat(lngInput.value);
+        if (lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180) {
+          updateMarker(lat, lng);
+        }
+      });
+    });
+
+    // Captura via GPS do navegador
+    btnGps.addEventListener('click', () => {
+      if (!('geolocation' in navigator)) {
+        showStatus('Seu navegador não suporta geolocalização.', 'error');
+        return;
+      }
+
+      btnGps.disabled = true;
+      btnGps.textContent = 'Obtendo coordenadas...';
+
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const lat = Number(position.coords.latitude.toFixed(6));
+          const lng = Number(position.coords.longitude.toFixed(6));
+          latInput.value = lat;
+          lngInput.value = lng;
+          updateMarker(lat, lng, 16);
+          btnGps.disabled = false;
+          btnGps.textContent = '📍 Usar minha localização atual (GPS)';
+          showStatus('Coordenadas capturadas via GPS!', 'success');
+        },
+        (error) => {
+          btnGps.disabled = false;
+          btnGps.textContent = '📍 Usar minha localização atual (GPS)';
+          showStatus('Não foi possível obter sua localização. Verifique as permissões.', 'error');
+        },
+        { enableHighAccuracy: true, timeout: 10000 }
+      );
+    });
+
+    // Envio silencioso para o Google Forms (sem sair da página)
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      if (GOOGLE_FORMS_CONFIG.formActionUrl.includes('SEU_FORM_ID_AQUI')) {
+        showStatus('Configure a URL e os entry IDs do Google Forms no código JS antes de enviar.', 'error');
+        return;
+      }
+
+      btnSubmit.disabled = true;
+      btnSubmit.textContent = 'Enviando...';
+
+      const formData = new URLSearchParams();
+      formData.append(GOOGLE_FORMS_CONFIG.entries.nomeLocal, nomeInput.value.trim());
+      formData.append(GOOGLE_FORMS_CONFIG.entries.latitude, latInput.value.trim());
+      formData.append(GOOGLE_FORMS_CONFIG.entries.longitude, lngInput.value.trim());
+
+      try {
+        // mode: 'no-cors' é necessário pois o Google Forms não retorna headers CORS,
+        // mas processa e salva os dados na planilha normalmente.
+        await fetch(GOOGLE_FORMS_CONFIG.formActionUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          body: formData.toString()
+        });
+
+        showStatus('Local registrado com sucesso na planilha!', 'success');
+        form.reset();
+        if (marker) {
+          map.removeLayer(marker);
+          marker = null;
+        }
+      } catch (err) {
+        showStatus('Erro de rede ao tentar enviar os dados.', 'error');
+      } finally {
+        btnSubmit.disabled = false;
+        btnSubmit.textContent = 'Enviar para Planilha';
+      }
+    });
+
+    function showStatus(message, type) {
+      statusMessage.textContent = message;
+      statusMessage.className = `status-banner ${type}`;
+      setTimeout(() => {
+        statusMessage.style.display = 'none';
+        statusMessage.className = 'status-banner';
+      }, 6000);
+    }
+  </script>
+</body>
+</html>
