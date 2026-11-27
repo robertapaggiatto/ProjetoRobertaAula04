@@ -1,0 +1,103 @@
+[
+  {
+    "tanque_id": "TQ-01-TUBARAO",
+    "nome_recinto": "Oceano Profundo & Tubarões",
+    "bioma": "Marinho Tropical",
+    "volume_milhares_litros": 2000,
+    "capacidade_animais": 45,
+    "faixa_segura_temperatura": {
+      "min": 23.0,
+      "max": 25.5
+    },
+    "faixa_segura_oxigenio_mg_l": {
+      "min": 6.0,
+      "max": 8.5
+    },
+    "faixa_segura_ph": {
+      "min": 8.0,
+      "max": 8.4
+    },
+    "limite_amonia_mg_l": 0.05,
+    "especies_principais": [
+      "Tubarão-Lixa",
+      "Tubarão-Mangona",
+      "Raia-Chita",
+      "Mero"
+    ]
+  },
+  {
+    "tanque_id": "TQ-02-RECIFE",
+    "nome_recinto": "Recife de Corais Vivos",
+    "bioma": "Recife Tropical",
+    "volume_milhares_litros": 450,
+    "capacidade_animais": 350,
+    "faixa_segura_temperatura": {
+      "min": 24.5,
+      "max": 26.5
+    },
+    "faixa_segura_oxigenio_mg_l": {
+      "min": 6.5,
+      "max": 8.5
+    },
+    "faixa_segura_ph": {
+      "min": 8.1,
+      "max": 8.5
+    },
+    "limite_amonia_mg_l": 0.02,
+    "especies_principais": [
+      "Peixe-Palhaço",
+      "Cirurgião-Patela",
+      "Corais Staghorn",
+      "Anêmona-do-Mar"
+    ]
+  },
+  {
+    "tanque_id": "TQ-03-PINGUIM",
+    "nome_recinto": "Costão Antártico (Pinguinário)",
+    "bioma": "Subpolar / Costeiro",
+    "volume_milhares_litros": 300,
+    "capacidade_animais": 28,
+    "faixa_segura_temperatura": {
+      "min": 14.0,
+      "max": 18.0
+    },
+    "faixa_segura_oxigenio_mg_l": {
+      "min": 7.0,
+      "max": 9.5
+    },
+    "faixa_segura_ph": {
+      "min": 7.8,
+      "max": 8.2
+    },
+    "limite_amonia_mg_l": 0.08,
+    "especies_principais": [
+      "Pinguim-de-Magalhães"
+    ]
+  },
+  {
+    "tanque_id": "TQ-04-AMAZONIA",
+    "nome_recinto": "Igarapé & Floresta Inundada",
+    "bioma": "Água Doce Amazônica",
+    "volume_milhares_litros": 850,
+    "capacidade_animais": 120,
+    "faixa_segura_temperatura": {
+      "min": 26.0,
+      "max": 29.0
+    },
+    "faixa_segura_oxigenio_mg_l": {
+      "min": 5.5,
+      "max": 7.5
+    },
+    "faixa_segura_ph": {
+      "min": 6.2,
+      "max": 7.0
+    },
+    "limite_amonia_mg_l": 0.05,
+    "especies_principais": [
+      "Pirarucu",
+      "Tambaqui",
+      "Aruanã",
+      "Peixe-Boi"
+    ]
+  }
+]
